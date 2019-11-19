@@ -89,10 +89,9 @@ object TiUtil {
 
     if (expr.children.isEmpty) {
       expr match {
-        // bit/duration type is not allowed to be pushed down
+        // bit, duration, set, and enum type is not allowed to be pushed down
         case attr: AttributeReference if nameTypeMap.contains(attr.name) =>
-          val head = nameTypeMap.get(attr.name).head
-          return !head.isInstanceOf[BitType]
+          return nameTypeMap.get(attr.name).head.isPushDownSupported
         // TODO:Currently we do not support literal null type push down
         // when Constant is ready to support literal null or we have other
         // options, remove this.
@@ -206,8 +205,8 @@ object TiUtil {
       tiConf.setUseTiFlash(conf.get(TiConfigConst.USE_TIFLASH).toBoolean)
     }
 
-    if (conf.contains(TiConfigConst.ENABLE_ARROW)) {
-      tiConf.setEnableArrow(conf.get(TiConfigConst.ENABLE_ARROW).toBoolean)
+    if (conf.contains(TiConfigConst.ENABLE_CHUNK)) {
+      tiConf.setEnableChunk(conf.get(TiConfigConst.ENABLE_CHUNK).toBoolean)
     }
 
     if (conf.contains(TiConfigConst.REGION_INDEX_SCAN_DOWNGRADE_THRESHOLD)) {

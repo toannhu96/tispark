@@ -1,11 +1,12 @@
 package com.pingcap.tikv.columnar;
 
-public class TiColumnarChunk {
+public class TiChunk {
   private TiColumnVector[] columnVectors;
   private int numOfRows;
 
-  public TiColumnarChunk(TiColumnVector[] columnVectors) {
+  public TiChunk(TiColumnVector[] columnVectors) {
     this.columnVectors = columnVectors;
+    this.numOfRows = columnVectors[0].numOfRows();
   }
 
   public TiColumnVector column(int ordinal) {
